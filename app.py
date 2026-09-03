@@ -66,9 +66,12 @@ def chat():
 
 
 if __name__ == '__main__':
+    # Bind to 0.0.0.0 and use the PORT provided by the host (e.g. Render).
+    # Locally this defaults to 5000 on http://127.0.0.1:5000
+    port = int(os.environ.get('PORT', 5000))
     print('\n' + '=' * 60)
     print('  AI REGISTRATION ASSISTANT - WEB')
-    print('  Open your browser at:  http://127.0.0.1:5000')
+    print(f'  Open your browser at:  http://127.0.0.1:{port}')
     print('  Press Ctrl+C to stop.')
     print('=' * 60)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)

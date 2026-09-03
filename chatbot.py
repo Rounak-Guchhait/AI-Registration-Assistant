@@ -25,11 +25,28 @@ from sklearn.pipeline import Pipeline
 # 1. NLTK DATA SETUP
 # -------------------------------------------------------------------
 # Download the required NLTK resources on first run.
-for resource in ('punkt', 'punkt_tab', 'stopwords', 'wordnet'):
-    try:
-        nltk.data.find(f'tokenizers/{resource}')
-    except LookupError:
-        nltk.download(resource, quiet=True)
+# Each resource lives in a specific sub-folder:
+#   punkt / punkt_tab  -> tokenizers/
+#   stopwords          -> corpora/
+#   wordnet            -> corpora/
+NLTK_RESOURCES = {
+    'punkt': 'tokenizers/punkt',
+    'punkt_tab': 'tokenizers/punkt_tab',
+    'stopwords': 'corpora/stopwords',
+    'wordnet': 'corpora/wordnet',
+}
+
+
+def _ensure_nltk_data():
+    helper = nltk.downloader.Downloader()  # manual downloader for reliable extraction
+    for resource in NLTK_RESOURCES:
+        try:
+            nltk.data.find(NLTK_RESOURCES[resource])
+        except LookupError:
+            helper.download(resource, quiet=True)
+
+
+_ensure_nltk_data()
 
 
 class RegistrationAssistant:
