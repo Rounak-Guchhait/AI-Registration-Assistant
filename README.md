@@ -4,6 +4,14 @@ An intelligent chatbot that guides students through the internship registration 
 
 Built as part of the **Free Online AI & Data Science Internship** (Task AI-SS-001) - Student Support & Internship Management Domain.
 
+## 🚀 Live Demo
+
+Try the chatbot live — no setup required:
+
+**[https://ai-registration-assistant-xg6k.onrender.com](https://ai-registration-assistant-xg6k.onrender.com)**
+
+> Note: On the free hosting plan, the first visit after a period of inactivity may take 30-60 seconds to wake the app. Just wait a moment and it loads.
+
 ## Features
 
 - **Intent Recognition** - Trained ML model (Naive Bayes + TF-IDF) classifies user queries
