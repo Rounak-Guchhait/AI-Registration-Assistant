@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AI Registration Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body class="dashboard-body">
+    <header class="topbar">
+        <div>
+            <h1>🗂️ Admin Dashboard</h1>
+            <span class="subtitle">AI Registration Assistant — Registrations</span>
+        </div>
+        <div class="top-actions">
+            <a href="{{ url_for('index') }}" class="btn-ghost">Chatbot</a>
+            <a href="{{ url_for('admin.export') }}" class="btn-primary">Export CSV</a>
+            <a href="{{ url_for('admin.logout') }}" class="btn-danger">Logout</a>
+        </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-wrap">
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Analytics cards -->
+    <section class="stats">
+        <div class="stat-card">
+            <span class="stat-label">Total Registrations</span>
+            <span class="stat-value">{{ total }}</span>
+        </div>
+        {% for field, count in fields %}
+            {% if loop.index <= 3 %}
+            <div class="stat-card">
+                <span class="stat-label">{{ field }}</span>
+                <span class="stat-value">{{ count }}</span>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    <!-- Registration table -->
+    <section class="table-card">
+        <div class="table-head">
+            <h2>Registered Students</h2>
+            <form method="GET" action="{{ url_for('admin.dashboard') }}" class="search-form">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search name, email, field...">
+                <button type="submit">Search</button>
+                {% if query %}<a href="{{ url_for('admin.dashboard') }}" class="clear-link">✕</a>{% endif %}
+            </form>
+        </div>
+
+        {% if records %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Field of Study</th>
+                    <th>Experience</th>
+                    <th>Registered At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ loop.index0 }}</td>
+                    <td>{{ record.name }}</td>
+                    <td>{{ record.email }}</td>
+                    <td>{{ record.field }}</td>
+                    <td>{{ record.experience }}</td>
+                    <td>{{ record.registered_at }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('admin.delete', index=loop.index0) }}"
+                              onsubmit="return confirm('Delete this record?');">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">No registrations found. Try using the chatbot to register a student!</p>
+        {% endif %}
+    </section>
+</body>
+</html>

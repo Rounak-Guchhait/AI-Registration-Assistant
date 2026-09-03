@@ -15,9 +15,13 @@ from flask import Flask, jsonify, render_template, request, session
 # Ensure the project directory is importable
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from chatbot import RegistrationAssistant
+from admin import admin_bp
 
 app = Flask(__name__)
 app.secret_key = 'ai-registration-assistant-secret-key-for-sessions'
+
+# Register the admin dashboard routes (served under /admin)
+app.register_blueprint(admin_bp)
 
 # Each browser session keeps its own chatbot instance so that
 # multiple users can register independently at the same time.

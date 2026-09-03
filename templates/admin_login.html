@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - AI Registration Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <form class="auth-card" method="POST" action="{{ url_for('admin.login') }}">
+            <h1>🔐 Admin Login</h1>
+            <p class="subtitle">AI Registration Assistant</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <label class="field">
+                <span>Username</span>
+                <input type="text" name="username" placeholder="admin" required autofocus>
+            </label>
+
+            <label class="field">
+                <span>Password</span>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </label>
+
+            <button type="submit" class="btn-primary">Log in</button>
+            <p class="hint">Demo credentials: <code>admin</code> / <code>admin123</code></p>
+            <a class="back-link" href="{{ url_for('index') }}">← Back to chatbot</a>
+        </form>
+    </div>
+</body>
+</html>
