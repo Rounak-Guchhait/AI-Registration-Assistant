@@ -90,10 +90,10 @@ Bot: Hello! Welcome to the internship registration. How can I help?
 You: I want to register
 Bot: Please provide your full name.
 
-You: My name is John Doe
-Bot: Nice to meet you, John Doe! Next, your email address.
+You: My name is Rounak Guchhait
+Bot: Nice to meet you, Rounak Guchhait! Next, your email address.
 
-You: john@gmail.com
+You: cserounak@gmail.com
 Bot: Your email is recorded. What's your field of study?
 
 You: Computer Science
@@ -134,7 +134,7 @@ After registering students through the chatbot, view and manage all applications
 
 ## Notes
 
-- No database required - registration data is stored in a simple JSON file (as specified in the task)
+- No database required - registration data is stored in a simple JSON file
 - NLTK resources (`punkt`, `stopwords`, `wordnet`) auto-download on first run
 
 ## Author
