@@ -22,6 +22,7 @@ Try the chatbot live — no setup required:
 - **Sentiment Analysis** - Detects positive/negative/neutral user tone
 - **FAQ Handling** - Answers questions about the internship, required skills, and the process
 - **Web Interface** - Floating chat bubble widget (like Amazon's corner chatbot)
+- **Admin Dashboard** - Protected panel to view, search, delete, and export registrations with analytics
 
 ## Technology Stack
 
@@ -36,12 +37,16 @@ Try the chatbot live — no setup required:
 ai-registration-assistant/
 ├── app.py              # Flask web server + chat API
 ├── chatbot.py          # Core chatbot logic (NLP + dialog management)
+├── admin.py            # Admin dashboard routes (login, table, analytics)
 ├── intents.json        # Intent patterns and responses
 ├── requirements.txt    # Python dependencies
 ├── templates/
-│   └── index.html     # Webpage with chat bubble widget
+│   ├── index.html     # Webpage with chat bubble widget
+│   ├── admin_login.html   # Admin login page
+│   └── admin_dashboard.html # Admin dashboard
 └── static/
     ├── style.css       # Chat widget styling
+    ├── admin.css       # Admin dashboard styling
     └── script.js       # Chat widget front-end logic
 ```
 
@@ -100,6 +105,24 @@ Bot: Let me confirm your registration.
 You: yes
 Bot: Registration confirmed! 🎉
 ```
+
+## Admin Dashboard
+
+After registering students through the chatbot, view and manage all applications at:
+
+```
+/admin
+```
+
+- **Demo credentials:** username `admin`, password `admin123`
+- View all registrations in a table (name, email, field, experience, date)
+- **Search** records by name, email, field, or experience
+- **Delete** unwanted records
+- **Export** all data as a CSV file
+- See **analytics** cards summarizing total registrations and top fields
+
+> ⚠️ This is a lightweight demo authentication. Use proper auth (hashed passwords, HTTPS)
+> for a real production deployment.
 
 ## How It Works
 
