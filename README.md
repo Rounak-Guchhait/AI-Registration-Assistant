@@ -10,7 +10,7 @@ Try the chatbot live — no setup required:
 
 **[https://ai-registration-assistant-xg6k.onrender.com](https://ai-registration-assistant-xg6k.onrender.com)**
 
-> Note: On the free hosting plan, the first visit after a period of inactivity may take 30-60 seconds to wake the app. Just wait a moment and it loads.
+> Note: It may take 30-60 seconds to wake the app. Just wait a moment for it to load.
 
 ## Features
 
