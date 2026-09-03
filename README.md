@@ -90,7 +90,7 @@ You: Beginner
 Bot: Let me confirm your registration.
 
 You: yes
-Bot: Registration confirmed!
+Bot: Registration confirmed! 🎉
 ```
 
 ## How It Works
