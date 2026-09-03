@@ -12,6 +12,8 @@ Try the chatbot live — no setup required:
 
 > Note: It may take 30-60 seconds to wake the app. Just wait a moment for it to load.
 
+![AI Registration Assistant](docs/screenshot.png)
+
 ## Features
 
 - **Intent Recognition** - Trained ML model (Naive Bayes + TF-IDF) classifies user queries
