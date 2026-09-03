@@ -2,8 +2,6 @@
 
 An intelligent chatbot that guides students through the internship registration process using **Natural Language Processing** and **Conversational AI**.
 
-Built as part of the **Free Online AI & Data Science Internship** (Task AI-SS-001) - Student Support & Internship Management Domain.
-
 ## 🚀 Live Demo
 
 Try the chatbot live — no setup required:
