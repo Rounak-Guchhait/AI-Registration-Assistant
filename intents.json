@@ -109,12 +109,18 @@
       "tag": "field",
       "patterns": [
         "computer science",
+        "cs",
         "engineering",
         "data science",
         "statistics",
         "mathematics",
         "information technology",
-        "study"
+        "it",
+        "study",
+        "bca",
+        "bba",
+        "bcom",
+        "i'm studying"
       ],
       "responses": [
         "Perfect! You're studying {field}. Now, tell me about your programming experience."

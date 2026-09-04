@@ -399,27 +399,80 @@ class RegistrationAssistant:
             return ' '.join(cleaned).title()
         return None
 
+    # Canonical fields and their known aliases (abbreviations, synonyms).
+    FIELD_ALIASES = {
+        'computer science': 'Computer Science',
+        'cs': 'Computer Science',
+        'comp sci': 'Computer Science',
+        'computers': 'Computer Science',
+        'information technology': 'Information Technology',
+        'it': 'Information Technology',
+        'i.t': 'Information Technology',
+        'i.t.': 'Information Technology',
+        'data science': 'Data Science',
+        'ds': 'Data Science',
+        'engineering': 'Engineering',
+        'engg': 'Engineering',
+        'statistics': 'Statistics',
+        'stats': 'Statistics',
+        'mathematics': 'Mathematics',
+        'math': 'Mathematics',
+        'maths': 'Mathematics',
+        'physics': 'Physics',
+        'business': 'Business',
+        'bcom': 'Business',
+        'b.com': 'Business',
+        'management': 'Management',
+        'bca': 'BCA',
+        'computer applications': 'BCA',
+        'bba': 'BBA',
+        'btech': 'B.Tech',
+        'b.tech': 'B.Tech',
+    }
+
     def _guess_field(self, text):
-        common = ['computer science', 'engineering', 'data science', 'information technology',
-                  'statistics', 'mathematics', 'physics', 'business', 'management']
-        low = text.lower()
-        for c in common:
-            if c in low:
-                return c.title()
-        # Fallback: use whatever words are present (min 2 words)
-        cleaned = self.preprocess_text(text)
-        if len(cleaned) >= 1 and re.search(r'[a-zA-Z]{3,}', text):
-            words = [w.title() for w in re.findall(r'[a-zA-Z]{3,}', text)]
-            return ' '.join(words)
+        """Map the user's answer to a canonical field name using an alias map.
+
+        Handles abbreviations and synonyms ("IT" -> Information Technology),
+        as well as full phrases. Always returns a cleaned canonical value.
+        """
+        low = text.lower().strip()
+        low = re.sub(r'\s+', ' ', low)
+
+        # 1. Try exact / substring match against known fields and aliases.
+        #    Longer aliases first so "information technology" wins over "it".
+        for alias in sorted(self.FIELD_ALIASES, key=len, reverse=True):
+            if alias in low:
+                return self.FIELD_ALIASES[alias]
+
+        # 2. Look for "i study / studying / my field is" phrases.
+        field_phrase = re.search(
+            r'(?:i study|i\'m studying|studying|my field is|field of study is)\s+([a-zA-Z.\s]+)',
+            low
+        )
+        if field_phrase:
+            phrase = field_phrase.group(1).strip()
+            if phrase:
+                return self._title_case(phrase)
+
+        # 3. Fallback: return the words the user typed (cleaned up).
+        words = re.findall(r'[a-zA-Z]{2,}', low)
+        if len(words) >= 1:
+            return ' '.join(w.title() for w in words)
         return None
+
+    @staticmethod
+    def _title_case(phrase):
+        """Convert 'information technology' -> 'Information Technology'."""
+        return ' '.join(w.title() for w in phrase.split())
 
     def _guess_experience(self, text):
         low = text.lower()
-        if any(w in low for w in ['beginner', 'novice', 'none', 'no experience', 'basic']):
+        if any(w in low for w in ['beginner', 'novice', 'none', 'no experience', 'basic', 'starting', 'new', 'fresher']):
             return 'Beginner'
-        if 'intermediate' in low:
+        if 'intermediate' in low or 'mid' in low or 'medium' in low:
             return 'Intermediate'
-        if any(w in low for w in ['advanced', 'expert']):
+        if any(w in low for w in ['advanced', 'expert', 'pro', 'experienced', 'senior']):
             return 'Advanced'
         return None
 
