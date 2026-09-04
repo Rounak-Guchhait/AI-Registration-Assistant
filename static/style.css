@@ -18,6 +18,33 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.site-header .container {
+    text-align: center;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-link {
+    background: #4a3f9d;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 2px solid #4a3f9d;
+    transition: background 0.2s ease;
+}
+
+.admin-link:hover {
+    background: #3a2f8d;
+    border-color: #3a2f8d;
+}
+
 .site-header h1 {
     font-size: 2rem;
     color: #4a3f9d;
