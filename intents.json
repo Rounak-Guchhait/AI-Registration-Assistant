@@ -132,7 +132,7 @@
         "novice"
       ],
       "responses": [
-        "Great! Your experience level is {experience}. Click yes to confirm your registration."
+        "Great! Your experience level is {experience}. Type \"yes\" to confirm your registration."
       ]
     },
     {
