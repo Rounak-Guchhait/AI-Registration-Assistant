@@ -10,6 +10,7 @@ no HTTPS enforcement) intended for internship demonstration purposes.
 import json
 import os
 from collections import Counter
+from datetime import datetime
 from io import StringIO
 
 import csv
@@ -74,7 +75,7 @@ def logout():
 @admin_bp.route('/')
 @login_required
 def dashboard():
-    """Main admin dashboard: table of registrations + analytics."""
+    """Main admin dashboard: table of registrations + analytics + charts."""
     records = load_registrations()
 
     # Search / filter
@@ -88,10 +89,54 @@ def dashboard():
             or query in str(r.get('experience', '')).lower()
         ]
 
-    # Analytics
+    # Basic analytics
     total = len(records)
     fields = Counter(r.get('field', 'Unknown') for r in records)
     experiences = Counter(r.get('experience', 'Unknown') for r in records)
+
+    # --- Chart data ---
+
+    # 1. Registrations over time (grouped by date)
+    daily = Counter()
+    for r in records:
+        raw = r.get('registered_at', '')
+        try:
+            dt = datetime.fromisoformat(raw.replace('Z', '+00:00'))
+            daily[dt.strftime('%Y-%m-%d')] += 1
+        except Exception:
+            pass
+    daily_sorted = sorted(daily.items())
+    chart_dates = [d[0] for d in daily_sorted]
+    chart_daily_counts = [d[1] for d in daily_sorted]
+
+    # 2. Field distribution (for doughnut chart)
+    chart_field_labels = [f[0] for f in fields.most_common()]
+    chart_field_values = [f[1] for f in fields.most_common()]
+
+    # 3. Experience level breakdown (for pie chart)
+    chart_exp_labels = [e[0] for e in experiences.most_common()]
+    chart_exp_values = [e[1] for e in experiences.most_common()]
+
+    # 4. Email provider distribution
+    email_providers = Counter()
+    for r in records:
+        email = r.get('email', '')
+        if '@' in email:
+            provider = email.split('@')[-1].split('.')[0].title()
+            email_providers[provider] += 1
+    chart_email_labels = [p[0] for p in email_providers.most_common(8)]
+    chart_email_values = [p[1] for p in email_providers.most_common(8)]
+
+    # 5. Registrations by day of week
+    dow_names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    dow_counts = [0] * 7
+    for r in records:
+        raw = r.get('registered_at', '')
+        try:
+            dt = datetime.fromisoformat(raw.replace('Z', '+00:00'))
+            dow_counts[dt.weekday()] += 1
+        except Exception:
+            pass
 
     return render_template(
         'admin_dashboard.html',
@@ -100,6 +145,16 @@ def dashboard():
         fields=fields.most_common(),
         experiences=experiences.most_common(),
         query=query,
+        chart_dates=json.dumps(chart_dates),
+        chart_daily_counts=json.dumps(chart_daily_counts),
+        chart_field_labels=json.dumps(chart_field_labels),
+        chart_field_values=json.dumps(chart_field_values),
+        chart_exp_labels=json.dumps(chart_exp_labels),
+        chart_exp_values=json.dumps(chart_exp_values),
+        chart_email_labels=json.dumps(chart_email_labels),
+        chart_email_values=json.dumps(chart_email_values),
+        chart_dow_names=json.dumps(dow_names),
+        chart_dow_counts=json.dumps(dow_counts),
     )
 
 

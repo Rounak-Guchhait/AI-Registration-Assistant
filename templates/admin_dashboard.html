@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - AI Registration Assistant</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body class="dashboard-body">
     <header class="topbar">
@@ -29,7 +30,7 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Analytics cards -->
+    <!-- Stats cards -->
     <section class="stats">
         <div class="stat-card">
             <span class="stat-label">Total Registrations</span>
@@ -41,6 +42,43 @@
             <span class="stat-value">{{ count }}</span>
         </div>
         {% endfor %}
+    </section>
+
+    <!-- Analytics Charts -->
+    <section class="analytics-section">
+        <h2 class="section-title">📊 Analytics</h2>
+
+        <div class="chart-grid">
+            <!-- Registrations Over Time -->
+            <div class="chart-card">
+                <h3>Registrations Over Time</h3>
+                <canvas id="dailyChart"></canvas>
+            </div>
+
+            <!-- Field Distribution -->
+            <div class="chart-card">
+                <h3>Field of Study Distribution</h3>
+                <canvas id="fieldChart"></canvas>
+            </div>
+
+            <!-- Experience Level -->
+            <div class="chart-card">
+                <h3>Experience Level Breakdown</h3>
+                <canvas id="expChart"></canvas>
+            </div>
+
+            <!-- Email Providers -->
+            <div class="chart-card">
+                <h3>Top Email Providers</h3>
+                <canvas id="emailChart"></canvas>
+            </div>
+
+            <!-- Registrations by Day of Week -->
+            <div class="chart-card chart-card-wide">
+                <h3>Registrations by Day of Week</h3>
+                <canvas id="dowChart"></canvas>
+            </div>
+        </div>
     </section>
 
     <!-- Registration table -->
@@ -90,5 +128,69 @@
         <p class="empty">No registrations found. Try using the chatbot to register a student!</p>
         {% endif %}
     </section>
+
+    <script>
+        const chartColors = ['#4a3f9d','#7c5cbf','#a78bfa','#c4b5fd','#6366f1','#818cf8','#a5b4fc','#e0e7ff'];
+
+        // 1. Registrations Over Time
+        new Chart(document.getElementById('dailyChart'), {
+            type: 'line',
+            data: {
+                labels: {{ chart_dates|safe }},
+                datasets: [{
+                    label: 'Registrations',
+                    data: {{ chart_daily_counts|safe }},
+                    borderColor: '#4a3f9d',
+                    backgroundColor: 'rgba(74,63,157,0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#4a3f9d'
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        });
+
+        // 2. Field Distribution (Doughnut)
+        new Chart(document.getElementById('fieldChart'), {
+            type: 'doughnut',
+            data: {
+                labels: {{ chart_field_labels|safe }},
+                datasets: [{ data: {{ chart_field_values|safe }}, backgroundColor: chartColors }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } } } }
+        });
+
+        // 3. Experience Level (Pie)
+        const expColors = ['#4ade80','#facc15','#f87171'];
+        new Chart(document.getElementById('expChart'), {
+            type: 'pie',
+            data: {
+                labels: {{ chart_exp_labels|safe }},
+                datasets: [{ data: {{ chart_exp_values|safe }}, backgroundColor: expColors }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } } } }
+        });
+
+        // 4. Email Providers (Bar)
+        new Chart(document.getElementById('emailChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ chart_email_labels|safe }},
+                datasets: [{ label: 'Users', data: {{ chart_email_values|safe }}, backgroundColor: '#7c5cbf', borderRadius: 6 }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        });
+
+        // 5. Day of Week (Bar)
+        new Chart(document.getElementById('dowChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ chart_dow_names|safe }},
+                datasets: [{ label: 'Registrations', data: {{ chart_dow_counts|safe }}, backgroundColor: '#6366f1', borderRadius: 6 }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        });
+    </script>
 </body>
 </html>
