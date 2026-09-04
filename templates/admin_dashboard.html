@@ -43,22 +43,6 @@
         {% endfor %}
     </section>
 
-    <!-- Field Distribution (compact) -->
-    {% if fields %}
-    <section class="field-dist">
-        <h3>Field Distribution</h3>
-        <div class="field-bars">
-            {% for field, count in fields %}
-            <div class="field-row">
-                <span class="field-name">{{ field }}</span>
-                <div class="field-bar" style="width: {{ (count / total * 100)|int }}%"></div>
-                <span class="field-count">{{ count }}</span>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
-    {% endif %}
-
     <!-- Registration table -->
     <section class="table-card">
         <div class="table-head">
