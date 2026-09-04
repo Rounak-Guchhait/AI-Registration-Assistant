@@ -35,15 +35,29 @@
             <span class="stat-label">Total Registrations</span>
             <span class="stat-value">{{ total }}</span>
         </div>
-        {% for field, count in fields %}
-            {% if loop.index <= 3 %}
-            <div class="stat-card">
-                <span class="stat-label">{{ field }}</span>
-                <span class="stat-value">{{ count }}</span>
-            </div>
-            {% endif %}
+        {% for exp, count in experiences %}
+        <div class="stat-card">
+            <span class="stat-label">{{ exp }}</span>
+            <span class="stat-value">{{ count }}</span>
+        </div>
         {% endfor %}
     </section>
+
+    <!-- Field Distribution (compact) -->
+    {% if fields %}
+    <section class="field-dist">
+        <h3>Field Distribution</h3>
+        <div class="field-bars">
+            {% for field, count in fields %}
+            <div class="field-row">
+                <span class="field-name">{{ field }}</span>
+                <div class="field-bar" style="width: {{ (count / total * 100)|int }}%"></div>
+                <span class="field-count">{{ count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
 
     <!-- Registration table -->
     <section class="table-card">
