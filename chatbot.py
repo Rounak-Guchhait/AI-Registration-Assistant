@@ -12,6 +12,8 @@ import random
 import re
 from datetime import datetime
 
+from storage import load_registrations, save_registration
+
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
@@ -434,21 +436,10 @@ class RegistrationAssistant:
     # 11. REGISTRATION SAVING & CONFIRMATION
     # -------------------------------------------------------------------
     def _save_registration(self):
-        """Append the current user data to registrations.json."""
-        data = []
-        if os.path.exists(self.registrations_file):
-            try:
-                with open(self.registrations_file, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-            except (json.JSONDecodeError, OSError):
-                data = []
-
+        """Persist the current user data (to Postgres if available, else JSON)."""
         record = dict(self.user_data)
         record['registered_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data.append(record)
-
-        with open(self.registrations_file, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2)
+        save_registration(record)
 
     def _confirmation_reply(self):
         return (
@@ -504,11 +495,7 @@ class RegistrationAssistant:
             print()
 
     def _print_registrations(self):
-        if not os.path.exists(self.registrations_file):
-            print("  (none yet)")
-            return
-        with open(self.registrations_file, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = load_registrations()
         if not data:
             print("  (none yet)")
             return

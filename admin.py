@@ -24,25 +24,8 @@ from flask import (Blueprint, flash, redirect, render_template, request,
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'admin123'
 
-# Path to the registration data file (same file the chatbot writes to).
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-REGISTRATIONS_FILE = os.path.join(BASE_DIR, 'registrations.json')
-
-
-def load_registrations():
-    """Load registration records from the JSON file."""
-    try:
-        with open(REGISTRATIONS_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        return data if isinstance(data, list) else []
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-
-
-def save_registrations(records):
-    """Persist registration records back to the JSON file."""
-    with open(REGISTRATIONS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(records, f, indent=2)
+# Import storage helpers (Postgres preferred, JSON fallback).
+from storage import delete_registration, load_registrations
 
 
 def is_authenticated():
@@ -126,9 +109,11 @@ def delete(index):
     """Delete a registration record by its index in the list."""
     records = load_registrations()
     if 0 <= index < len(records):
-        removed = records.pop(index)
-        save_registrations(records)
-        flash(f"Deleted {removed.get('name', 'record')}.", 'info')
+        removed_name = records[index].get('name', 'record')
+        if delete_registration(index):
+            flash(f"Deleted {removed_name}.", 'info')
+        else:
+            flash('Could not delete the record.', 'error')
     else:
         flash('Record not found.', 'error')
     return redirect(url_for('admin.dashboard'))
