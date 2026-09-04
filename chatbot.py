@@ -516,7 +516,7 @@ class RegistrationAssistant:
         """Run the interactive command-line chat loop."""
         print("\n" + "=" * 60)
         print("  AI REGISTRATION ASSISTANT")
-        print("  Free Online AI & Data Science Internship - Data Alcott Systems")
+        print("  Free Online AI & Data Science Internship")
         print("  Type 'help' for options, 'bye' to exit")
         print("=" * 60)
         print("\nWelcome! I can help you with internship registration.")
