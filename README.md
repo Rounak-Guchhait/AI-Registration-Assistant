@@ -123,8 +123,7 @@ After registering students through the chatbot, view and manage all applications
 - **Export** all data as a CSV file
 - See **analytics** cards summarizing total registrations and top fields
 
-> ⚠️ This is a lightweight demo authentication. Use proper auth (hashed passwords, HTTPS)
-> for a real production deployment.
+> ⚠️ This is a lightweight demo authentication.
 
 ## How It Works
 
