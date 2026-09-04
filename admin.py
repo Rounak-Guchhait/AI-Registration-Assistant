@@ -124,8 +124,8 @@ def dashboard():
         if '@' in email:
             provider = email.split('@')[-1].split('.')[0].title()
             email_providers[provider] += 1
-    chart_email_labels = [p[0] for p in email_providers.most_common(8)]
-    chart_email_values = [p[1] for p in email_providers.most_common(8)]
+    chart_email_labels = [p[0] for p in email_providers.most_common(6)]
+    chart_email_values = [p[1] for p in email_providers.most_common(6)]
 
     # 5. Registrations by day of week
     dow_names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
