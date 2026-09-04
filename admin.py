@@ -109,9 +109,9 @@ def dashboard():
     chart_dates = [d[0] for d in daily_sorted]
     chart_daily_counts = [d[1] for d in daily_sorted]
 
-    # 2. Field distribution (for doughnut chart)
-    chart_field_labels = [f[0] for f in fields.most_common()]
-    chart_field_values = [f[1] for f in fields.most_common()]
+    # 2. Field distribution (for doughnut chart) — top 5 only
+    chart_field_labels = [f[0] for f in fields.most_common(5)]
+    chart_field_values = [f[1] for f in fields.most_common(5)]
 
     # 3. Experience level breakdown (for pie chart)
     chart_exp_labels = [e[0] for e in experiences.most_common()]
