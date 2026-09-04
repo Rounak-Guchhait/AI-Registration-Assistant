@@ -16,19 +16,13 @@ body {
     padding: 24px;
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.site-header .container {
-    text-align: center;
-}
-
-.header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: relative;
 }
 
 .admin-link {
+    position: absolute;
+    top: 24px;
+    right: 24px;
     background: #4a3f9d;
     color: #fff;
     padding: 10px 22px;
