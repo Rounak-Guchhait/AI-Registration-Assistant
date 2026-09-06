@@ -20,7 +20,7 @@ Try the chatbot live — no setup required:
 - **Entity Extraction** - Extracts name, email, field of study, and experience level from free text
 - **Dialog Management** - State-based conversation flow (greet → collect info → confirm)
 - **Validation Checks** - Email format validation with automatic re-prompts
-- **Registration Storage** - Saves completed registrations to `registrations.json`
+- **Registration Storage** - Saves completed registrations to PostgreSQL (JSON fallback for local dev)
 - **Sentiment Analysis** - Detects positive/negative/neutral user tone
 - **FAQ Handling** - Answers questions about the internship, required skills, and the process
 - **Web Interface** - Floating chat bubble widget (like Amazon's corner chatbot)
@@ -32,6 +32,8 @@ Try the chatbot live — no setup required:
 - **NLTK** - Text preprocessing, tokenization, lemmatization
 - **Scikit-learn** - Machine learning intent classifier
 - **Flask** - Web interface
+- **PostgreSQL** - Persistent registration storage
+- **Chart.js** - Interactive analytics charts
 
 ## Project Structure
 
@@ -39,13 +41,15 @@ Try the chatbot live — no setup required:
 ai-registration-assistant/
 ├── app.py              # Flask web server + chat API
 ├── chatbot.py          # Core chatbot logic (NLP + dialog management)
-├── admin.py            # Admin dashboard routes (login, table, analytics)
+├── admin.py            # Admin dashboard routes (login, table, charts, analytics)
+├── storage.py          # Storage layer (PostgreSQL / JSON fallback)
+├── seed.py             # Auto-generates 100 demo registration records
 ├── intents.json        # Intent patterns and responses
 ├── requirements.txt    # Python dependencies
 ├── templates/
 │   ├── index.html     # Webpage with chat bubble widget
 │   ├── admin_login.html   # Admin login page
-│   └── admin_dashboard.html # Admin dashboard
+│   └── admin_dashboard.html # Admin dashboard with analytics charts
 └── static/
     ├── style.css       # Chat widget styling
     ├── admin.css       # Admin dashboard styling
@@ -121,7 +125,7 @@ After registering students through the chatbot, view and manage all applications
 - **Search** records by name, email, field, or experience
 - **Delete** unwanted records
 - **Export** all data as a CSV file
-- See **analytics** cards summarizing total registrations and top fields
+- See **analytics** with 5 interactive charts (registration trends, field distribution, experience levels, email providers, day-of-week)
 
 > ⚠️ This is a lightweight demo authentication.
 
@@ -135,7 +139,7 @@ After registering students through the chatbot, view and manage all applications
 
 ## Notes
 
-- No database required - registration data is stored in a simple JSON file
+- Registration data persists in a PostgreSQL database when `DATABASE_URL` is set (e.g. on Render); falls back to a local JSON file for development
 - NLTK resources (`punkt`, `stopwords`, `wordnet`) auto-download on first run
 
 ## Author
