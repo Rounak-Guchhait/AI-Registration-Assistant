@@ -43,7 +43,6 @@ ai-registration-assistant/
 ├── chatbot.py          # Core chatbot logic (NLP + dialog management)
 ├── admin.py            # Admin dashboard routes (login, table, charts, analytics)
 ├── storage.py          # Storage layer (PostgreSQL / JSON fallback)
-├── seed.py             # Auto-generates 100 demo registration records
 ├── intents.json        # Intent patterns and responses
 ├── requirements.txt    # Python dependencies
 ├── templates/
